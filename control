@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # /etc/init.d/chat
 #
@@ -17,14 +17,14 @@
 ### END INIT INFO
 
 # Source function library.
-. /etc/init.d/functions
+#. /etc/init.d/functions
 
 #工作目录
 workPath=$(cd $(dirname $0)/; pwd)
 
-bin=$workPath/main
-pidFile=$workPath/pid
-logFile=$workPath/info.log
+bin=$workPath/falcon-wechat
+pidFile=$workPath/var/pid
+logFile=$workPath/var/app.log
 
 function check_pid() {
     if [ -f $pidFile ];then
@@ -79,6 +79,11 @@ function status() {
     fi
 }
 
+function build() {
+    go build
+    mv chat $bin
+}
+
 function help() {
     echo "$0 start|stop|restart|status"
 }
@@ -99,6 +104,8 @@ elif [ "$1" == "status" ];then
     status
 elif [ "$1" == "pid" ];then
     pid
+elif [ "$1" == "build" ];then
+    build
 else
     help
 fi
